@@ -84,7 +84,6 @@ TemplateSession = {
     When get is called we create a `Deps.Dependency.depend()` for that key in the store.
 
     @method get
-    @param {String} id               The template instances id, best use `this._id` from your current data context.
     @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
     @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
     @return {Mixed} The stored value.
@@ -105,7 +104,6 @@ TemplateSession = {
     When set is called every depending reactive function where `TemplateSession.get()` with the same key is called will rerun.
 
     @method set
-    @param {String} id               The template instances id, best use `this._id` from your current data context.
     @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
     @param {String|Object} value     If the value is a string with `rerun`, then it will be rerun all dependent functions where get `TemplateInstance.get()` was called.
     @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
@@ -160,7 +158,6 @@ TemplateSession = {
     **Note** This is by default NOT reactive. If you want it to rerun dependecies after removing the property, pass `{reactive: true}` as third parameter.
 
     @method unset
-    @param {String} id               The template instances id, best use `this._id` from your current data context.
     @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
     @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
     @return undefined
@@ -188,9 +185,9 @@ TemplateSession = {
     **/
     unsetAll: function (propertyName, options) {
         // find all keys containing this property name
-        _.each(Sesion.keys, function(key, keyName){
-            // delet those keys and dependecies
-            if (keyName.indexOf(propertyName) !== -1) {
+        _.each(Session.keys, function(key, keyName){
+            // delete those keys and dependecies
+            if (keyName.indexOf('_'+ propertyName) !== -1) {
                 if(options && options.reactive === true)
                     Session.keyDeps[keyName].changed();
 

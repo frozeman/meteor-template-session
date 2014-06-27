@@ -1,72 +1,76 @@
-A reactive store based on IDs for template instance specific triggers.
-The `TemplateStore` class is used for making reactive property transfers between helpers and callbacks possible.
+Works like Meteor's Session, but bound to template instances.
+The `TemplateSession` class is used for making reactive property transfers between helpers and callbacks possible.
 
 Installation
 ============
 
-    $ mrt add template-store
+    $ mrt add template-session
 
 Usage
 =====
 
-This works like sessions with an added id, to make it unique for template instances.
-The `this` in the following examples, can either be the data context from within a helper,
-or the template instance from a template callback (like `created()`,`rendered()`,`destroyed()` or events).
-It will then look for the `_id` property to be use as the instance as identifier.
-You can also pass your own custom ID, but you have to make sure, that you also pass this same ID everytime you call `TemplateStore.get()` or  `TemplateStore.set()`.
-If you don't pass an ID a standard ID will be used, which is then the same for all stores with the given property name (which makes it a general session).
+The `TemplateSession` works like Session, but for template instance specific
+
 
 To set and get properties does as follow:
 
     // set a property
-    TemplateStore.set(this,'cards_tvguide_broadcast->myProperty','myValue');
+    TemplateSession.set('myProperty', 'myValue');
 
     // to get it inside a helper, or callback
-    TemplateStore.get(this,'cards_tvguide_broadcast->myProperty');
+    TemplateSession.get('myProperty');
+
 
 Additional you can pass a third options parameter with `{reactive: false}`, to prevent reactive reruns.
+You also can pass a fixed id, to be used for the TemplateSession like: `{id: 1234}`
 
-**Note** Be aware that your data context need to have an `_id` property,
-otherwise you have to manually set an id parameter with an value which is accessable from inside the helpers or callbacks (e.g setting an id manually to the data context).
+When you want to to get/set TemplateSession fomr within a template hook or event use the following syntax:
 
-You also should be aware when using the `{{#with}}` helper, as this changes the data context.
+    // set a property
+    TemplateSession.set.call(this, 'myProperty', 'myValue');
+
+    // to get it inside a helper, or callback
+    TemplateSession.get.call(this, 'myProperty');
+
+    // or from an event
+    'click button': function(e, template) {
+        TemplateSession.set.call(template, 'myProperty', 'myValue');
+    }
 
 **Re-run**
-You cans also use the `TemplateStore` to reactivily "re-run" helpers by setting the value to `rerun`.
-This will just rerun all reactive helpers which call `TemplateStore.get()`.
+You cans also use the `TemplateSession` to reactivily "re-run" helpers by setting the value to `rerun`.
+This will just rerun all reactive helpers which call `TemplateSession.get()`.
 
 **Note**
 
-It won't rerun depending functions, when calling `TemplateStore.set()` and the value didn't changed. Except when the stored value is an object or array (as this is only a stored reference).
+It won't rerun depending functions, when calling `TemplateSession.set()` and the value didn't changed. Except when the stored value is an object or array (as this is only a stored reference).
 
 
 API Docs
 ========
 
-### TemplateStore.get(id, propertyName, options)
+### TemplateSession.get(propertyName, options)
 
 When get is called it creates a `Deps.Dependency.depend()` for that key in the store.
 
 - @method get
-- @param {String} id               The template instances id, best use `this._id` from your current data context.
 - @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
 - @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
 - @return {Mixed} The stored value.
 
 
 
-### TemplateStore.set(id, propertyName, value, options)
+### TemplateSession.set(propertyName, value, options)
 
-When set is called every depending reactive function where `TemplateStore.get()` with the same key is called will rerun.
+When set is called every depending reactive function where `TemplateSession.get()` with the same key is called will rerun.
 
 - @method set
-- @param {String} id               The template instances id, best use `this._id` from your current data context.
 - @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
 - @param {String|Object} value     If the value is a string with `rerun`, then it will be rerun all dependent functions where get `TemplateInstance.get()` was called.
 - @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
 - @return undefined
 
-### TemplateStore.setAll(propertyName, value, options)
+### TemplateSession.setAll(propertyName, value, options)
 
 Will run `set()` for all key, which match the property name, independent of its id.
 
@@ -77,20 +81,19 @@ Will run `set()` for all key, which match the property name, independent of its 
 - @return undefined
 
 
-### TemplateStore.unset(id, propertyName, options)
+### TemplateSession.unset(propertyName, options)
 
 Clears a set property.
 
 **Note** This is by default NOT reactive. If you want it to rerun dependecies before removing the property, pass `{reactive: true}` as third parameter.
 
 - @method unset
-- @param {String} id               The template instances id, best use `this._id` from your current data context.
 - @param {String} propertyName     The name of the property you want to get. Should consist of the `'templateName->myPropertyName'`
 - @param {Object} options          give `{reactive: true}` if it shouldn't be reactive.
 - @return undefined
 
 
-### TemplateStore.unsetAll(propertyName, options)
+### TemplateSession.unsetAll(propertyName, options)
 
 Clears all instances of a set property.
 
