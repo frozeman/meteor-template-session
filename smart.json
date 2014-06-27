@@ -1,9 +1,9 @@
 {
-  "name": "template-store",
-  "description": "A reactive store based on IDs for template instance specific triggers.",
-  "homepage": "https://github.com/frozeman/meteor-template-store",
+  "name": "template-session",
+  "description": "Works like Meteor's Session, but bound to template instances.",
+  "homepage": "https://github.com/frozeman/meteor-template-session",
   "author": "Fabian Vogelsteller (http://frozeman.de)",
-  "version": "0.1.3",
-  "git": "https://github.com/frozeman/meteor-template-store.git",
+  "version": "0.2.0",
+  "git": "https://github.com/frozeman/meteor-template-session.git",
   "packages": {}
 }
