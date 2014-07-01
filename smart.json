@@ -3,7 +3,7 @@
   "description": "Works like Meteor's Session, but bound to template instances.",
   "homepage": "https://github.com/frozeman/meteor-template-session",
   "author": "Fabian Vogelsteller (http://frozeman.de)",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "git": "https://github.com/frozeman/meteor-template-session.git",
   "packages": {}
 }

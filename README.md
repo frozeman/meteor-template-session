@@ -1,6 +1,8 @@
 Works like Meteor's Session, but bound to template instances.
 The `TemplateSession` class is used for making reactive property transfers between helpers and callbacks possible.
 
+Demo: http://templatesessiondemo.meteor.com
+
 Installation
 ============
 
