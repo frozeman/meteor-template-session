@@ -1,22 +1,26 @@
 Package.describe({
-    summary: "Works like Meteor's Session, but bound to template instances."
+    name: "mrt:template-session",
+    summary: "Deprecated: use mrt:template-session2, Works like Meteor's Session, but bound to template instances.",
+    version: "0.2.3",
+    git: "https://github.com/frozeman/meteor-template-session.git"
 });
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
+    api.versionsFrom('METEOR@0.9.0');
 
-    // third party
+    // core
     api.use('underscore', 'client');
 
     api.export('TemplateSession');
 
     // FILES
-    api.add_files('TemplateSession.js', 'client');
+    api.addFiles('TemplateSession.js', 'client');
 });
 
-Package.on_test(function (api) {
+Package.onTest(function (api) {
 
-    api.use('template-session');
+    api.use('mrt:template-session');
     api.use('tinytest');
-    api.add_files('TemplateSession_tests.js', 'client');
+    api.addFiles('TemplateSession_tests.js', 'client');
 
 });
